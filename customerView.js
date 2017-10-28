@@ -99,10 +99,10 @@ function menu() {
         }).then(function(result) {
             var savedData = {};
 
-            if (parseInt(answer.quantity) <= parseInt(result[0].stock_quantity)) {
+            if (parseInt(answer.quantity) <= parseInt(result[0].inventory_quantity)) {
                 savedData.answer = answer;
                 savedData.result = result;
-            } else if (parseInt(answer.quantity) > parseInt(result[0].stock_quantity)) {
+            } else if (parseInt(answer.quantity) > parseInt(result[0].inventory_quantity)) {
                 console.log('Insufficient quantity!');
             } else {
                 console.log('An error occurred, exiting Bamazon, your order is not complete.');
@@ -112,11 +112,11 @@ function menu() {
             // Update the SQL DB and console log messages for completion.
         }).then(function(savedData) {
             if (savedData.answer) {
-                var updatedQuantity = parseInt(savedData.result[0].stock_quantity) - parseInt(savedData.answer.quantity);
+                var updatedQuantity = parseInt(savedData.result[0].inventory_quantity) - parseInt(savedData.answer.quantity);
                 var itemId = savedData.answer.item;
                 var totalCost = parseInt(savedData.result[0].price) * parseInt(savedData.answer.quantity);
                 connection.query('UPDATE products SET ? WHERE ?', [{
-                    stock_quantity: updatedQuantity
+                    inventory_quantity: updatedQuantity
                 }, {
                     item_id: itemId
                 }], function(err, res) {
