@@ -100,7 +100,7 @@ function productsForSale() {
 // Grabs all items with an inventory below 3 only
 function lowInventory() {
     return new Promise(function(resolve, reject) {
-        connection.query('SELECT * FROM products WHERE stock_quantity < 3', function(err, res) {
+        connection.query('SELECT * FROM products WHERE inventory_quantity < 3', function(err, res) {
             if (err) reject(err);
             resolve(res);
         });
@@ -119,7 +119,7 @@ function lowInventory() {
 function addInventory() {
     return inquirer.prompt([{
         name: 'item',
-        message: 'Enter the item number of the product you would like to add stock to.',
+        message: 'Enter the item number of the product you would like to add inventory to.',
         type: 'input',
         validate: function(value) {
             // Validator to ensure the product number is a number and it exists
@@ -132,7 +132,7 @@ function addInventory() {
         }
     }, {
         name: 'quantity',
-        message: 'How much stock would you like to add?',
+        message: 'How much inventory would you like to add?',
         type: 'input',
         // Validator to ensure it is number
         validate: function(value) {
@@ -145,20 +145,20 @@ function addInventory() {
         }
     }]).then(function(answer) {
         return new Promise(function(resolve, reject) {
-            connection.query('SELECT stock_quantity FROM products WHERE ?', { item_id: answer.item }, function(err, res) {
+            connection.query('SELECT inventory_quantity FROM products WHERE ?', { item_id: answer.item }, function(err, res) {
                 if (err) reject(err);
                 resolve(res);
             });
         }).then(function(result) {
-            var updatedQuantity = parseInt(result[0].stock_quantity) + parseInt(answer.quantity);
+            var updatedQuantity = parseInt(result[0].inventory_quantity) + parseInt(answer.quantity);
             var itemId = answer.item
             connection.query('UPDATE products SET ? WHERE ?', [{
-                stock_quantity: updatedQuantity
+                inventory_quantity: updatedQuantity
             }, {
                 item_id: itemId
             }], function(err, res) {
                 if (err) throw err;
-                console.log('The total stock has been updated to: ' + updatedQuantity + '.');
+                console.log('The total inventory has been updated to: ' + updatedQuantity + '.');
                 enterStoreManager();
             });
             // catch errors
@@ -216,7 +216,7 @@ function addProduct() {
         }
     }, {
         name: 'quantity',
-        message: 'Enter the amount of initial stock quantity.',
+        message: 'Enter the amount of initial inventory quantity.',
         type: 'input',
         validate: function(value) {
             // Validator to ensure it is a valid number
