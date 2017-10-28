@@ -89,7 +89,7 @@ function productsForSale() {
     }).then(function(result) {
         logItems(result);
     }).then(function() {
-        enterManagerApp();
+        enterStoreManager();
         // catch errors
     }).catch(function(err) {
         console.log(err);
@@ -107,7 +107,7 @@ function lowInventory() {
     }).then(function(result) {
         logItems(result);
     }).then(function() {
-        enterManagerApp();
+        enterStoreManager();
         // catch errors
     }).catch(function(err) {
         console.log(err);
@@ -159,7 +159,7 @@ function addInventory() {
             }], function(err, res) {
                 if (err) throw err;
                 console.log('The total stock has been updated to: ' + updatedQuantity + '.');
-                enterManagerApp();
+                enterStoreManager();
             });
             // catch errors
         }).catch(function(err) {
@@ -242,7 +242,7 @@ function addProduct() {
             // log message
         }).then(function() {
             console.log('The product has been added to the inventory.');
-            enterManagerApp();
+            enterStoreManager();
             // catch errors
         }).catch(function(err) {
             console.log(err);
